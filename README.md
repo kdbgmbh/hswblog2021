@@ -2,4 +2,4 @@
 
 # API
 
-To set up the API, run `npm install` in the `api` directory.
+To set up the API, run `npm install` in the `api` directory and run `npm run dev`.
