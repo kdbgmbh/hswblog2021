@@ -39,7 +39,7 @@ app.get('/blogposts', function (req, res) {
 
 // Beim Aufrufen eines Blog-Eintrags den Counter erhöhen
 app.get('/blogposts/:id', function (req, res) {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id, 10);
 
     // Invalide ID
     if (isNaN(id)) {
