@@ -1,0 +1,25 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "exercise": "nodemon exercise.js"
+  },
+  "author": "David Dernovoj (d@kdb.gmbh)",
+  "license": "ISC",
+  "prettier": {
+    "tabWidth": 4,
+    "printWidth": 120,
+    "semi": true,
+    "singleQuote": true,
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "trailingComma": "all"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  }
+}
