@@ -37,15 +37,17 @@ app.get('/blogposts', function (req, res) {
     res.json(blogs);
 });
 
-// Beim aufrufen eines Blogs den Counter erhöhen
+// Beim Aufrufen eines Blog-Eintrags den Counter erhöhen
 app.get('/blogposts/:id', function (req, res) {
-    // Invalide ID
-    const blogPost = blogs.find((b) => b.id === parseInt(req.params.id));
+    const id = parseInt(req.params.id, 10);
 
-    if (isNaN(parseInt(req.params.id))) {
+    // Invalide ID
+    if (isNaN(id)) {
         res.status(400).json({ error: 'bad request' }).end();
         return;
     }
+
+    const blogPost = blogs.find((b) => b.id === id);
 
     if (!blogPost) {
         res.status(404).json({ error: 'not found' }).end();
