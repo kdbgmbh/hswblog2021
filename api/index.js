@@ -3,14 +3,18 @@ const express = require('express');
 const err = require('express-error-response');
 const app = express();
 
+// Register JSON parser for the request body
 app.use(express.json());
 
-// Static list of blogs... for now
+// Import and register the session middleware
+const sessionMiddleware = require('./middlewares/001_session');
+sessionMiddleware(app);
 
+// Import and register routes
 const blogRoute = require('./routes/blogposts');
-
 blogRoute(app);
 
+// Register the error middleware to use RequestErrors in the services
 app.use(
     err({
         logger: function (err) {
@@ -22,6 +26,7 @@ app.use(
     }),
 );
 
+// Start listening on port 3001
 app.listen(3001, function () {
     console.log('Started the server on port 3001');
 });

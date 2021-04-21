@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon index.js -e js",
     "exercise": "nodemon exercise.js"
   },
   "author": "David Dernovoj (d@kdb.gmbh)",
@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "express-catch": "^1.0.0",
     "express-error-response": "^1.0.6",
+    "lowdb": "^1.0.0",
     "nodemon": "^2.0.7"
   }
 }
