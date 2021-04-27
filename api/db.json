@@ -50,5 +50,18 @@
       "views": 0
     }
   ],
-  "maxID": 9
+  "maxID": 13,
+  "users": [
+    {
+      "username": "mustermann",
+      "name": "Max Mustermann",
+      "password": "password"
+    },
+    {
+      "username": "fritz",
+      "name": "Paula Fritz",
+      "password": "supersecure"
+    }
+  ],
+  "sessions": {}
 }
