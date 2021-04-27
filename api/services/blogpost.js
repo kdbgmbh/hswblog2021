@@ -1,24 +1,13 @@
 const { notFound } = require('express-error-response');
 
-// Dependencies for the local JSON "database"
-const lowDb = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-
-// Instantiation of the db adapter and connection
-const adapter = new FileSync('db.json');
-const db = lowDb(adapter);
-
-// Initialize defaults for the database
-// TODO: bootstrap the database connection in the index and set it in the server connection
-db.defaults({ blogs: [], maxID: 0 }).write();
-
 /**
  * Returns a blog by ID.
  *
  * @param {number} id ID of the blog to fetch
+ * @param {object} db Database connection
  * @return {object} found blog or undefined
  */
-exports.find = function (id) {
+exports.find = function (id, db) {
     return db.get('blogs').find({ id: id }).value();
 };
 
@@ -27,11 +16,12 @@ exports.find = function (id) {
  * and increases its view counter by 1.
  *
  * @param {number} id ID of the blog to fetch
+ * @param {object} db Database connection
  * @return {object} fetched blog
  */
-exports.get = function (id) {
+exports.get = function (id, db) {
     // Use the other function to find the blog
-    const blog = exports.find(id);
+    const blog = exports.find(id, db);
 
     // Throw if it's falsy (not found)
     if (!blog) {
@@ -53,9 +43,10 @@ exports.get = function (id) {
  * that must contain a text property
  *
  * @param {object} body  Request body containing the text property
+ * @param {object} db Database connection
  * @return {object} created blog
  */
-exports.create = function (body) {
+exports.create = function (body, db, session) {
     // Get the max ID stored in the db state
     const lastID = db.get('maxID').value();
 
@@ -63,10 +54,12 @@ exports.create = function (body) {
     const created = {
         id: lastID + 1,
         text: body.text,
-        creator: 'Max Mustermann',
+        creator: session.user.username,
         likes: 0,
         views: 0,
     };
+
+    console.log('Created blogpost', created);
 
     // Update the stored max ID with the recently increased one
     db.set('maxID', created.id).write();
@@ -81,9 +74,10 @@ exports.create = function (body) {
 /**
  * Returns all blogs
  *
+ * @param {object} db Database connection
  * @return {object[]}
  */
-exports.getAll = function () {
+exports.getAll = function (db) {
     return db.get('blogs').value();
 };
 
@@ -92,11 +86,12 @@ exports.getAll = function () {
  *
  * @param {number} id   ID of the blog to update
  * @param {string} text text to set
+ * @param {object} db Database connection
  * @return {object} updated blog
  */
-exports.update = function (id, text) {
+exports.update = function (id, text, db) {
     // Use the other function to find the blog
-    const blog = exports.find(id);
+    const blog = exports.find(id, db);
 
     // Throw if it's falsy (not found)
     if (!blog) {
@@ -117,10 +112,11 @@ exports.update = function (id, text) {
  * Deletes a blog by ID
  *
  * @param {number} id ID of the block to delete
+ * @param {object} db Database connection
  */
-exports.del = function (id) {
+exports.del = function (id, db) {
     // Find the blog to make sure it exists
-    const blog = exports.find(id);
+    const blog = exports.find(id, db);
 
     // Check whether it actually does
     if (!blog) {
