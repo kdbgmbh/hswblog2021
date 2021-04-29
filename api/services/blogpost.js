@@ -1,13 +1,19 @@
 const { notFound } = require('express-error-response');
+const fs = require('fs');
 
 /**
  * Returns a blog by ID.
  *
  * @param {number} id ID of the blog to fetch
  * @param {object} db Database connection
+ * @param {object} session session of the user
  * @return {object} found blog or undefined
  */
-exports.find = function (id, db) {
+exports.find = function (id, db, session) {
+    if (session) {
+        return db.get('blogs').find({ id, creator: session.user.username }).value();
+    }
+
     return db.get('blogs').find({ id: id }).value();
 };
 
@@ -17,22 +23,26 @@ exports.find = function (id, db) {
  *
  * @param {number} id ID of the blog to fetch
  * @param {object} db Database connection
+ * @param {object} session session of the user
+ * @param {boolean} increaseViewCounter whether the view counter should be incremented
  * @return {object} fetched blog
  */
-exports.get = function (id, db) {
+exports.get = function (id, db, session, increaseViewCounter = true) {
     // Use the other function to find the blog
-    const blog = exports.find(id, db);
+    const blog = exports.find(id, db, session);
 
     // Throw if it's falsy (not found)
     if (!blog) {
         notFound();
     }
 
-    // Increase the views property by 1
-    blog.views++;
+    if (increaseViewCounter) {
+        // Increase the views property by 1
+        blog.views++;
 
-    // Persist the database
-    db.write();
+        // Persist the database
+        db.write();
+    }
 
     // Finally, return the blog
     return blog;
@@ -44,6 +54,7 @@ exports.get = function (id, db) {
  *
  * @param {object} body  Request body containing the text property
  * @param {object} db Database connection
+ * @param {object} session session of the user
  * @return {object} created blog
  */
 exports.create = function (body, db, session) {
@@ -59,8 +70,6 @@ exports.create = function (body, db, session) {
         views: 0,
     };
 
-    console.log('Created blogpost', created);
-
     // Update the stored max ID with the recently increased one
     db.set('maxID', created.id).write();
 
@@ -75,9 +84,14 @@ exports.create = function (body, db, session) {
  * Returns all blogs
  *
  * @param {object} db Database connection
+ * @param {object} session session of the user
  * @return {object[]}
  */
-exports.getAll = function (db) {
+exports.getAll = function (db, session) {
+    if (session) {
+        return db.get('blogs').filter({ creator: session.user.username }).value();
+    }
+
     return db.get('blogs').value();
 };
 
@@ -87,11 +101,12 @@ exports.getAll = function (db) {
  * @param {number} id   ID of the blog to update
  * @param {string} text text to set
  * @param {object} db Database connection
+ * @param {object} session session of the user
  * @return {object} updated blog
  */
-exports.update = function (id, text, db) {
+exports.update = function (id, text, db, session) {
     // Use the other function to find the blog
-    const blog = exports.find(id, db);
+    const blog = exports.find(id, db, session);
 
     // Throw if it's falsy (not found)
     if (!blog) {
@@ -113,10 +128,11 @@ exports.update = function (id, text, db) {
  *
  * @param {number} id ID of the block to delete
  * @param {object} db Database connection
+ * @param {object} session session of the user
  */
-exports.del = function (id, db) {
+exports.del = function (id, db, session) {
     // Find the blog to make sure it exists
-    const blog = exports.find(id, db);
+    const blog = exports.find(id, db, session);
 
     // Check whether it actually does
     if (!blog) {
@@ -125,4 +141,60 @@ exports.del = function (id, db) {
 
     // Persist the deletion
     db.get('blogs').remove({ id }).write();
+};
+
+exports.addPicture = function (id, file, db, session) {
+    const blog = exports.find(id, db, session);
+
+    if (!blog) {
+        notFound();
+    }
+
+    const maxID = db.get('maxImageID').value();
+
+    const img = {
+        id: maxID + 1,
+        mime: file.mimetype,
+        original: file.originalname,
+        path: file.path,
+        size: file.size,
+        blog_id: id,
+    };
+
+    db.set('maxImageID', img.id).write();
+
+    db.get('images').push(img).write();
+
+    return img;
+};
+
+exports.getPictureList = function (id, db) {
+    const blog = exports.find(id, db);
+
+    if (!blog) {
+        notFound();
+    }
+
+    const images = db.get('images').filter({ blog_id: id }).value();
+
+    return images;
+};
+
+exports.getPicture = function (id, imageID, db) {
+    const blog = exports.find(id, db);
+
+    if (!blog) {
+        notFound();
+    }
+
+    const img = db.get('images').find({ blog_id: id, id: imageID }).value();
+
+    if (!img) {
+        notFound();
+    }
+
+    return {
+        img,
+        stream: fs.createReadStream(img.path),
+    };
 };
