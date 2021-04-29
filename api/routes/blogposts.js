@@ -1,13 +1,16 @@
 // Import functions from the blogpost service
-const { get, create, getAll, update, del } = require('../services/blogpost');
+const { get, create, getAll, update, del, addPicture, getPicture, getPictureList } = require('../services/blogpost');
 // Import ID validation function from utils
 const { validateAndParseID } = require('../services/utils');
 // Import badRequest function from the dependency
 const { badRequest } = require('express-error-response');
 
+const multer = require('multer');
+const upload = multer({ dest: 'files/' });
+
 module.exports = function (expressApp) {
-    // Endpoint that returns all blogposts
-    expressApp.get('/blogposts', function (req, res) {
+    // Endpoint that returns all blogposts (public)
+    expressApp.get('/p/blogposts', function (req, res) {
         // Get the database connection from the express app
         const db = req.app.get('database');
 
@@ -17,7 +20,34 @@ module.exports = function (expressApp) {
         res.json(blogs);
     });
 
-    // Beim Aufrufen eines Blog-Eintrags den Counter erhöhen
+    // Endpoint that returns all blogposts for the current user
+    expressApp.get('/blogposts', function (req, res) {
+        // Get the database connection from the express app
+        const db = req.app.get('database');
+
+        // Use the service function to obtain the data
+        const blogs = getAll(db, res.locals.session);
+        // Send the data in the response
+        res.json(blogs);
+    });
+
+    // Increase counter for a blog entry
+    expressApp.get('/p/blogposts/:id', function (req, res) {
+        // Obtain the ID
+        const id = validateAndParseID(req.params.id);
+
+        // Get the database connection from the express app
+        const db = req.app.get('database');
+
+        // Get the blog via service
+        // Service throws 404 if not found
+        const blogPost = get(id, db, undefined, true);
+
+        // Return the found block
+        res.json(blogPost);
+    });
+
+    // Get blog post by id for our session
     expressApp.get('/blogposts/:id', function (req, res) {
         // Obtain the ID
         const id = validateAndParseID(req.params.id);
@@ -27,13 +57,13 @@ module.exports = function (expressApp) {
 
         // Get the blog via service
         // Service throws 404 if not found
-        const blogPost = get(id, db);
+        const blogPost = get(id, db, res.locals.session, false);
 
         // Return the found block
         res.json(blogPost);
     });
 
-    // Blogeintrag hinzufügen
+    // Add a blog entry
     expressApp.post('/blogposts', function (req, res) {
         // Get the database connection from the express app
         const db = req.app.get('database');
@@ -45,7 +75,7 @@ module.exports = function (expressApp) {
         res.status(201).json(created);
     });
 
-    // Blogeintrag bearbeiten
+    // Edit a blog entry
     expressApp.put('/blogposts/:id', function (req, res) {
         // Obtain the ID
         const id = validateAndParseID(req.params.id);
@@ -58,13 +88,13 @@ module.exports = function (expressApp) {
         const db = req.app.get('database');
 
         // Update the blog by ID and its new body
-        const blog = update(id, req.body.text, db);
+        const blog = update(id, req.body.text, db, res.locals.session);
 
         // Return the updated blog
         res.json(blog);
     });
 
-    // Blogeintrag löschen
+    // Delete a blog entry
     expressApp.delete('/blogposts/:id', function (req, res) {
         // Obtain the ID
         const id = validateAndParseID(req.params.id);
@@ -74,9 +104,51 @@ module.exports = function (expressApp) {
 
         // Attempt to delete the blog
         // Throws not found if a blog with the ID does not exist
-        del(id, db);
+        del(id, db, res.locals.session);
 
         // Return no content
         res.status(204).end();
+    });
+
+    expressApp.post('/blogposts/:id/upload', upload.single('image'), function (req, res) {
+        // Obtain the ID
+        const id = validateAndParseID(req.params.id);
+
+        // Get the database connection from the express app
+        const db = req.app.get('database');
+
+        const pic = addPicture(id, req.file, db, res.locals.session);
+
+        res.json(pic);
+    });
+
+    expressApp.get('/p/blogposts/:id/images/:iid', function (req, res) {
+        // Obtain the ID
+        const id = validateAndParseID(req.params.id);
+        const imageID = validateAndParseID(req.params.iid);
+
+        // Get the database connection from the express app
+        const db = req.app.get('database');
+
+        const { img, stream } = getPicture(id, imageID, db);
+
+        res.set('content-length', img.size);
+        res.set('content-disposition', `inline; filename="${img.original}"`);
+
+        res.type(img.mime);
+
+        stream.pipe(res);
+    });
+
+    expressApp.get('/p/blogposts/:id/images', function (req, res) {
+        // Obtain the ID
+        const id = validateAndParseID(req.params.id);
+
+        // Get the database connection from the express app
+        const db = req.app.get('database');
+
+        const images = getPictureList(id, db);
+
+        res.json(images);
     });
 };
