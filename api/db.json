@@ -3,6 +3,7 @@
     {
       "id": 1,
       "text": "some new blog text",
+      "title": "Blog 1 M",
       "creator": "mustermann",
       "likes": 300,
       "views": 867
@@ -11,6 +12,7 @@
       "id": 2,
       "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lectus nulla, ultricies vitae nisl a, viverra dictum neque. Aliquam diam massa, aliquet eu nibh in, viverra sollicitudin nulla. Etiam rutrum sapien ac justo sodales maximus.",
       "creator": "fritz",
+      "title": "Blog 1 F",
       "likes": 800,
       "views": 5016
     },
@@ -18,6 +20,7 @@
       "id": 3,
       "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tempus nibh vulputate condimentum convallis. Aliquam erat volutpat. Nullam sodales ex et libero imperdiet, sit amet dapibus dui luctus. Quisque ac molestie lacus. Nulla luctus risus.",
       "creator": "mustermann",
+      "title": "Blog 2",
       "likes": -2,
       "views": 22
     },
@@ -25,6 +28,7 @@
       "id": 6,
       "text": "Dat blogpost",
       "creator": "mustermann",
+      "title": "Blog 3",
       "likes": 0,
       "views": 0
     },
@@ -32,6 +36,7 @@
       "id": 7,
       "text": "Dat blogpost",
       "creator": "mustermann",
+      "title": "Blog 4",
       "likes": 0,
       "views": 0
     },
@@ -39,6 +44,7 @@
       "id": 8,
       "text": "Dat blogpost",
       "creator": "mustermann",
+      "title": "Blog 5",
       "likes": 0,
       "views": 0
     }

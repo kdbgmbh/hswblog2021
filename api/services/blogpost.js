@@ -52,19 +52,22 @@ exports.get = function (id, db, session, increaseViewCounter = true) {
  * Creates a new blog from a body object
  * that must contain a text property
  *
- * @param {object} body  Request body containing the text property
+ * @param {object} body  Request body containing the text and title properties
  * @param {object} db Database connection
  * @param {object} session session of the user
  * @return {object} created blog
  */
 exports.create = function (body, db, session) {
+    const { text, title } = body;
+
     // Get the max ID stored in the db state
     const lastID = db.get('maxID').value();
 
     // Initialize new object to push
     const created = {
         id: lastID + 1,
-        text: body.text,
+        text,
+        title,
         creator: session.user.username,
         likes: 0,
         views: 0,
@@ -99,12 +102,14 @@ exports.getAll = function (db, session) {
  * Updates a blog with new text and returns
  *
  * @param {number} id   ID of the blog to update
- * @param {string} text text to set
+ * @param {object} body  Request body containing the text and title properties
  * @param {object} db Database connection
  * @param {object} session session of the user
  * @return {object} updated blog
  */
-exports.update = function (id, text, db, session) {
+exports.update = function (id, body, db, session) {
+    const { text, title } = body;
+
     // Use the other function to find the blog
     const blog = exports.find(id, db, session);
 
@@ -115,6 +120,7 @@ exports.update = function (id, text, db, session) {
 
     // Update the text prop
     blog.text = text;
+    blog.title = title;
 
     // Persist the database
     db.write();

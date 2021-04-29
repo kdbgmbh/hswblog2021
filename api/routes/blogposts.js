@@ -68,6 +68,12 @@ module.exports = function (expressApp) {
         // Get the database connection from the express app
         const db = req.app.get('database');
 
+        // Accept anything but the property text not existing
+        // as that is what the blog text is set to
+        if ('undefined' === typeof req.body.text) badRequest();
+        // Same for the title
+        if ('undefined' === typeof req.body.title) badRequest();
+
         // Create blogpost via service
         const created = create(req.body, db, res.locals.session);
 
@@ -83,12 +89,14 @@ module.exports = function (expressApp) {
         // Accept anything but the property text not existing
         // as that is what the blog text is set to
         if ('undefined' === typeof req.body.text) badRequest();
+        // Same for the title
+        if ('undefined' === typeof req.body.title) badRequest();
 
         // Get the database connection from the express app
         const db = req.app.get('database');
 
         // Update the blog by ID and its new body
-        const blog = update(id, req.body.text, db, res.locals.session);
+        const blog = update(id, req.body, db, res.locals.session);
 
         // Return the updated blog
         res.json(blog);
