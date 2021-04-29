@@ -2,6 +2,7 @@
 const express = require('express');
 const err = require('express-error-response');
 const { notFound } = require('express-error-response');
+const cookieParser = require('cookie-parser');
 const app = express();
 
 // Dependencies for the local JSON "database"
@@ -21,10 +22,14 @@ db.defaults({
         { username: 'fritz', name: 'Paula Fritz', password: 'supersecure' },
     ],
     sessions: {},
+    images: [],
+    maxImageID: 0,
 }).write();
 
 // Register JSON parser for the request body
 app.use(express.json());
+// Register cookie parser
+app.use(cookieParser());
 
 // Import and register the session middleware
 const sessionMiddleware = require('./middlewares/001_session');
