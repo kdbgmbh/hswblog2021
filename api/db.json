@@ -2,50 +2,43 @@
   "blogs": [
     {
       "id": 1,
-      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc porta, tellus rhoncus hendrerit rhoncus, metus lacus aliquet nisl, ac iaculis turpis metus nec ligula. Nunc tempor nulla risus, pulvinar tempus ipsum volutpat id. Vestibulum ante.",
-      "creator": "Max Mustermann",
+      "text": "some new blog text",
+      "creator": "mustermann",
       "likes": 300,
-      "views": 866
+      "views": 867
     },
     {
       "id": 2,
       "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lectus nulla, ultricies vitae nisl a, viverra dictum neque. Aliquam diam massa, aliquet eu nibh in, viverra sollicitudin nulla. Etiam rutrum sapien ac justo sodales maximus.",
-      "creator": "Paula Fritz",
+      "creator": "fritz",
       "likes": 800,
-      "views": 5004
+      "views": 5016
     },
     {
       "id": 3,
       "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tempus nibh vulputate condimentum convallis. Aliquam erat volutpat. Nullam sodales ex et libero imperdiet, sit amet dapibus dui luctus. Quisque ac molestie lacus. Nulla luctus risus.",
-      "creator": "Max Mustermann",
+      "creator": "mustermann",
       "likes": -2,
       "views": 22
     },
     {
       "id": 6,
       "text": "Dat blogpost",
-      "creator": "Max Mustermann",
+      "creator": "mustermann",
       "likes": 0,
       "views": 0
     },
     {
       "id": 7,
       "text": "Dat blogpost",
-      "creator": "Max Mustermann",
+      "creator": "mustermann",
       "likes": 0,
       "views": 0
     },
     {
       "id": 8,
       "text": "Dat blogpost",
-      "creator": "Max Mustermann",
-      "likes": 0,
-      "views": 0
-    },
-    {
-      "id": 9,
-      "text": "Dat blogpost",
-      "creator": "Max Mustermann",
+      "creator": "mustermann",
       "likes": 0,
       "views": 0
     }
@@ -63,5 +56,7 @@
       "password": "supersecure"
     }
   ],
-  "sessions": {}
+  "sessions": {},
+  "images": [],
+  "maxImageID": 3
 }
