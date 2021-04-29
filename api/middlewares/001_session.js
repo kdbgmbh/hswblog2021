@@ -1,4 +1,4 @@
-const { byToken } = require('../services/session');
+const { byToken, sessionTokenFromRequest } = require('../services/session');
 
 let requestNum = 0;
 
@@ -6,6 +6,8 @@ function isPublic(req) {
     const { method, path } = req;
 
     if (method === 'POST' && path === '/session') return true;
+
+    if (path.startsWith('/p/')) return true;
 
     return false;
 }
@@ -16,12 +18,12 @@ module.exports = function (app) {
             return next();
         }
 
-        const token = req.headers['b-api'];
+        const token = sessionTokenFromRequest(req);
 
         let session = null;
 
         if (token) {
-            session = byToken(token, req.app.get('database'));
+            session = byToken(token, req.app.get('database'), true);
             res.locals.session = session;
         }
 

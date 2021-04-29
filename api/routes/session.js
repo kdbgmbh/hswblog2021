@@ -1,4 +1,4 @@
-const { create } = require('../services/session');
+const { create, setCookie } = require('../services/session');
 
 module.exports = function (expressApp) {
     expressApp.get('/session', function (req, res) {
@@ -15,6 +15,8 @@ module.exports = function (expressApp) {
             },
             db,
         );
+
+        setCookie(session.token, res);
 
         res.json(session);
     });
