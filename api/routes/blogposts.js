@@ -70,9 +70,9 @@ module.exports = function (expressApp) {
 
         // Accept anything but the property text not existing
         // as that is what the blog text is set to
-        if ('undefined' === typeof req.body.text) badRequest();
+        if ('undefined' === typeof req.body.text) badRequest({ error: 'text property required' });
         // Same for the title
-        if ('undefined' === typeof req.body.title) badRequest();
+        if ('undefined' === typeof req.body.title) badRequest({ error: 'title property required' });
 
         // Create blogpost via service
         const created = create(req.body, db, res.locals.session);
@@ -88,9 +88,9 @@ module.exports = function (expressApp) {
 
         // Accept anything but the property text not existing
         // as that is what the blog text is set to
-        if ('undefined' === typeof req.body.text) badRequest();
+        if ('undefined' === typeof req.body.text) badRequest({ error: 'text property required' });
         // Same for the title
-        if ('undefined' === typeof req.body.title) badRequest();
+        if ('undefined' === typeof req.body.title) badRequest({ error: 'title property required' });
 
         // Get the database connection from the express app
         const db = req.app.get('database');
