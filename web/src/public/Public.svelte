@@ -20,5 +20,9 @@
         <LazyRoute load={() => import('./Article.svelte')} />
     </Route>
 
+    <Route path="/login">
+        <LazyRoute load={() => import('./Login.svelte')} />
+    </Route>
+
     <Route path="*">not found</Route>
 </Router>

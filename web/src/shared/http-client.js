@@ -221,9 +221,7 @@ const DEFAULT_OPTIONS = {
 export async function request(req, options = DEFAULT_OPTIONS) {
     const payload = {
         method: req.method,
-        headers: {
-            'b-api': 'auth1234', // TODO: Remove
-        },
+        headers: {},
         credentials: 'include',
     };
     if ('GET' !== req.method && 'DELETE' !== req.method) {

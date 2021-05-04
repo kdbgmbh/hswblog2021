@@ -115,7 +115,8 @@ module.exports = function (expressApp) {
         del(id, db, res.locals.session);
 
         // Return no content
-        res.status(204).end();
+        // res.status(204).end();
+        res.json({ deleted: true });
     });
 
     expressApp.post('/blogposts/:id/upload', upload.single('image'), function (req, res) {

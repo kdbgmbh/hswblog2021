@@ -6,7 +6,7 @@
       "title": "Blog 1 M",
       "creator": "mustermann",
       "likes": 300,
-      "views": 867
+      "views": 873
     },
     {
       "id": 2,
@@ -14,15 +14,7 @@
       "creator": "fritz",
       "title": "Blog 1 F",
       "likes": 800,
-      "views": 5016
-    },
-    {
-      "id": 3,
-      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tempus nibh vulputate condimentum convallis. Aliquam erat volutpat. Nullam sodales ex et libero imperdiet, sit amet dapibus dui luctus. Quisque ac molestie lacus. Nulla luctus risus.",
-      "creator": "mustermann",
-      "title": "Blog 2",
-      "likes": -2,
-      "views": 22
+      "views": 5017
     },
     {
       "id": 6,
@@ -30,7 +22,7 @@
       "creator": "mustermann",
       "title": "Blog 3",
       "likes": 0,
-      "views": 0
+      "views": 1
     },
     {
       "id": 7,
@@ -41,15 +33,15 @@
       "views": 0
     },
     {
-      "id": 8,
-      "text": "Dat blogpost",
+      "id": 14,
+      "text": "<p><em>hello</em><u>, </u><strong>world</strong></p>",
+      "title": "Ignored",
       "creator": "mustermann",
-      "title": "Blog 5",
       "likes": 0,
-      "views": 0
+      "views": 1
     }
   ],
-  "maxID": 13,
+  "maxID": 14,
   "users": [
     {
       "username": "mustermann",
@@ -62,7 +54,24 @@
       "password": "supersecure"
     }
   ],
-  "sessions": {},
+  "sessions": {
+    "9c7488416e289327cfe07e3f26dbe9dbe7d2c72910538f5f": {
+      "user": {
+        "name": "Max Mustermann",
+        "username": "mustermann"
+      },
+      "token": "9c7488416e289327cfe07e3f26dbe9dbe7d2c72910538f5f",
+      "expiresAt": 1620118058135
+    },
+    "96fb9f192837e2ee620dfbaf5bbe744ff119c11aaeb087b8": {
+      "user": {
+        "name": "Max Mustermann",
+        "username": "mustermann"
+      },
+      "token": "96fb9f192837e2ee620dfbaf5bbe744ff119c11aaeb087b8",
+      "expiresAt": 1620120436394
+    }
+  },
   "images": [],
   "maxImageID": 3
 }

@@ -1,13 +1,13 @@
 import { GET } from '../../shared/http-client';
 
 /**
- * Loads all public articles
+ * Loads all articles
  *
  * @returns {Promise<null|object[]>}
  */
 export async function loadArticles() {
     try {
-        const response = await GET('p/blogposts');
+        const response = await GET('blogposts');
         return response.body;
     } catch (err) {
         return null;
@@ -22,7 +22,7 @@ export async function loadArticles() {
  */
 export async function loadArticle(id) {
     try {
-        const response = await GET(`p/blogposts/${id}`);
+        const response = await GET(`blogposts/${id}`);
         return response.body;
     } catch (err) {
         return null;

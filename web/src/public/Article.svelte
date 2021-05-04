@@ -19,11 +19,11 @@
     <Container class="mt-5">
         <a class="btn btn-primary btn-sm" href="/" use:link>Back to index</a>
 
-        <h1 class="mt-2">$title</h1>
+        <h1 class="mt-2">{article.title}</h1>
         <h2>{article.creator}</h2>
         <small>{article.views} views | {article.likes} likes | <Link to={`/view/${$params.id}`}>Permalink</Link></small>
 
-        <p>{article.text}</p>
+        {@html article.text}
     </Container>
     <Title title="$title" />
 {/if}

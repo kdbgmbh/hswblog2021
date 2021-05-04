@@ -4,6 +4,7 @@
     import { Container } from 'sveltestrap';
     import ArticleLink from './ArticleLink.svelte';
     import Title from '../shared/Title.svelte';
+    import { link } from '../shared/router';
 
     onMount(load);
 
@@ -16,6 +17,8 @@
 
 <Container>
     <h1 class="mt-5">All articles</h1>
+
+    <a class="btn btn-primary mb-5" href="/new" use:link>Create article</a>
 
     {#if articles !== null}
         {#each articles as article (article.id)}
