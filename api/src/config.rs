@@ -4,7 +4,8 @@ use std::fs::File;
 #[derive(Deserialize)]
 pub struct Config {
     pub mongodb_uri: String,
-    pub collection_name: String,
+    pub users: String,
+    pub db_name: String,
 }
 
 impl Config {
