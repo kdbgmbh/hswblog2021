@@ -1,8 +1,7 @@
 use mongodb::{
     bson::{doc, oid::ObjectId, Document},
     error::Error as MongoError,
-    options::ClientOptions,
-    Client, Collection,
+    Collection,
 };
 
 pub struct UserService {
@@ -10,12 +9,7 @@ pub struct UserService {
 }
 
 impl UserService {
-    pub async fn init(mongodb_uri: String, db_name: String, user_collection: String) -> Self {
-        let client_options = ClientOptions::parse(&mongodb_uri).await.unwrap();
-        let client = Client::with_options(client_options).unwrap();
-        let database = client.database(&db_name); //TODO: Add db operations
-        let db = database.collection(&user_collection);
-
+    pub async fn new(db: Collection) -> Self {
         Self { db }
     }
 

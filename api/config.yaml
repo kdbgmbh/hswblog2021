@@ -1,3 +1,5 @@
 mongodb_uri: "mongodb://localhost:27017"
 db_name: "main"
 users: "user"
+blog_db: "blog"
+blog_collection: "posts"

@@ -6,6 +6,8 @@ pub struct Config {
     pub mongodb_uri: String,
     pub users: String,
     pub db_name: String,
+    pub blog_db: String,
+    pub blog_collection: String,
 }
 
 impl Config {
