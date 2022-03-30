@@ -1,0 +1,15 @@
+[package]
+name = "api"
+version = "0.1.0"
+authors = ["billaids <jimmy.nelle@hsw-stud.de>", "aykxt <aykuxt@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+mongodb = "2.0.0-beta"
+rocket = { git = "https://github.com/SergioBenitez/Rocket" }
+rocket_contrib = { git = "https://github.com/SergioBenitez/Rocket" }
+serde = { version = "1.0.126", features = ["derive"] }
+serde_repr = "0.1.7"
+serde_yaml = "0.8.17"
